@@ -1,8 +1,10 @@
 from event_data_service import  EventObjects
 from owners import PlayerHoldings
+import owners as o
 
 import random
 from random import choice
+import sys
 
 
 class EventTumbler:
@@ -32,8 +34,13 @@ class EventEngine:
             #add event picking logic
             player = choice(self.p)
             eventTable = choice(player.holdings)
-            event = EventObjects[eventTable]
-            return player, eventTable, event.getEvent()
+            #ok now roll in the generic table
+            generic_event = EventObjects[o.GENERIC].getEvent()
+            if generic_event.startswith("Building-Specific Event:"):
+                event = EventObjects[eventTable].getEvent()
+            else:
+                event = generic_event
+            return player, eventTable, event
 
         else:
             return None;
