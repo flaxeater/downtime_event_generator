@@ -24,3 +24,16 @@ TAVERN='Tavern'
 TEMPLE='Temple'
 THEATER='Theater'
 THIEVES_GUILD="Thieves' Guild"
+
+
+class PlayerHoldings:
+    def __init__(self,name,holdings):
+        self.name=name
+        self.holdings=holdings
+
+    def __str__(self):
+        return self.name
+    def __repr__(self):
+        return self.name
+
+

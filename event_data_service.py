@@ -1,26 +1,48 @@
+#CONFIG
+DATA_FILE='data/events.csv'
+
+
+
+#/CONFIG
 import csv
 from random import choice
+import sys
 d100=lambda:choice(range(1,101))
 
 
 class EventTable:
-	def __init__(self):
-		self.eventRows = []
-		pass
-	def addRow(self,row):
-		self.eventRows.append(row)
-	def getRandomRow(self):
-		roll=d100()
-names = {}
-rows = []
-with open('data/events.csv') as csvfile:
-	reader = csv.reader(csvfile)
-	for row in reader:
-		rows.append(row)
-		if not names.has_key(row[0]):
-			names[row[0]]=EventTable()
-		names[row[0]].addRow(row)
-		
-		
-print names['Guildhall']
-print names.keys()
+    def __init__(self):
+        self.eventRows = {}
+        pass
+
+    def __str__(self):
+        return repr(self.eventRows)
+
+    def __repr__(self):
+        return repr(self.eventRows)
+
+    def addRow(self,row):
+        self.eventRows[(row[1],row[2])]=row[3:]
+
+    def getEvent(self):
+        roll=d100()
+        for low,high in self.eventRows:
+            print roll, low, high
+            if roll>=int(low) and roll<=int(high):
+                return self.eventRows[(low,high)][-1] 
+        return roll
+
+
+EventObjects = {}
+with open(DATA_FILE) as csvfile:
+    reader = csv.reader(csvfile)
+    reader.next()
+    for row in reader:
+        if not EventObjects.has_key(row[0]):
+            EventObjects[row[0]]=EventTable()
+        EventObjects[row[0]].addRow(row)
+        
+        
+if __name__ == '__main__':
+    print EventObjects['Guildhall']
+    print EventObjects
