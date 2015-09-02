@@ -27,7 +27,6 @@ class EventTable:
     def getEvent(self):
         roll=d100()
         for low,high in self.eventRows:
-            print roll, low, high
             if roll>=int(low) and roll<=int(high):
                 return self.eventRows[(low,high)][-1] 
         return roll
